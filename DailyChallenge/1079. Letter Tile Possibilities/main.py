@@ -28,6 +28,8 @@ Constraints:
 tiles consists of uppercase English letters.
 """
 
+from collections import Counter
+
 
 class Solution(object):
     def numTilePossibilities(self, tiles):
@@ -35,3 +37,22 @@ class Solution(object):
         :type tiles: str
         :rtype: int
         """
+
+        def backtrack(counter):
+            count = 0
+            for tile in counter:
+                if counter[tile] > 0:
+                    counter[tile] -= 1
+                    count += 1 + backtrack(counter)
+                    counter[tile] += 1
+            return count
+
+        counter = Counter(tiles)
+        return backtrack(counter)
+
+
+sol = Solution()
+
+print(sol.numTilePossibilities("AAB") == 8)
+print(sol.numTilePossibilities("AAABBC") == 188)
+print(sol.numTilePossibilities("V") == 1)
