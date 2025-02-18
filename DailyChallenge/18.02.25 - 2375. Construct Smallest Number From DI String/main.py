@@ -52,20 +52,15 @@ class Solution(object):
             return arr
 
         digits = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        smallest_num = ""
         for i in range(len(digits)):
-            for j, char in enumerate(pattern):
-                if char == "I":
-                    while digits[j] > digits[j + 1]:
+            for j in range(len(pattern)):
+                if pattern[j] == "I":
+                    if digits[j] > digits[j + 1]:
                         digits = swap_array(digits, j, j + 1)
-                elif char == "D":
-                    while digits[j] < digits[j + 1]:
+                else:
+                    if digits[j] < digits[j + 1]:
                         digits = swap_array(digits, j, j + 1)
-            print(pattern)
-            print(digits)
-            for digit in digits:
-                smallest_num += str(digit)
-        return smallest_num
+        return "".join(str(digit) for digit in digits[: len(pattern) + 1])
 
 
 sol = Solution()
