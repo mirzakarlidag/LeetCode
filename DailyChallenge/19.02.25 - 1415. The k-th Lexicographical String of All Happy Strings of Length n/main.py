@@ -59,23 +59,28 @@ class Solution(object):
         :type k: int
         :rtype: str
         """
-        chars = ["a", "b", "c"]
-        happy_string = ""
-        happy_strings = []
-        while len(happy_string) < n:
-            for i in range(n):
-                for char in chars:
-                    happy_string += char
-            print(happy_string)
-            happy_string = ""
-            if happy_string not in happy_strings:
-                happy_strings.append(happy_string)
-            if len(happy_strings) >= pow(n, 2):
-                break
+        results = []
+
+        def backtrack(current):
+            if len(current) == n:
+                results.append(current)
+                return
+
+            for char in "abc":
+                if len(current) > 0 and char == current[-1]:
+                    continue
+                backtrack(current + char)
+
+        backtrack("")
+
+        if len(results) < k:
+            return ""
+
+        return results[k - 1]
 
 
 sol = Solution()
-sol.getHappyString(3, 0)
-# print("Test Case 1: ", sol.getHappyString(1, 3) == "c")
-# print("Test Case 2: ", sol.getHappyString(1, 4) == "")
-# print("Test Case 3: ", sol.getHappyString(3, 9) == "cab")
+
+print("Test Case 1: ", sol.getHappyString(1, 3) == "c")
+print("Test Case 2: ", sol.getHappyString(1, 4) == "")
+print("Test Case 3: ", sol.getHappyString(3, 9) == "cab")
