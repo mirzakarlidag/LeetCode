@@ -36,21 +36,6 @@ Constraints:
 1 <= k <= 100
 """
 
-# [
-#  "aba"
-#  "abc"
-#  "aca"
-#  "acb"
-#  "bab"
-#  "bac"
-#  "bca"
-#  "bcb"
-#  "cab"
-#  "cac"
-#  "cba"
-#  "cbc"
-# ]
-
 
 class Solution(object):
     def getHappyString(self, n, k):
