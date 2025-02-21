@@ -66,26 +66,72 @@ Total calls of find() is between [1, 104]
 """
 
 
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
 class FindElements(object):
 
     def __init__(self, root):
         """
         :type root: Optional[TreeNode]
         """
+        self.values = set()
+
+        def reconstruct(node):
+            if node.left != None:
+                node.left.val = 2 * node.val + 1
+                self.values.add(node.left.val)
+                reconstruct(node.left)
+            if node.right != None:
+                node.right.val = 2 * node.val + 2
+                self.values.add(node.right.val)
+                reconstruct(node.right)
+
+        root.val = 0
+        self.values.add(0)
+        reconstruct(root)
 
     def find(self, target):
         """
         :type target: int
         :rtype: bool
         """
+        return target in self.values
 
 
-# Your FindElements object will be instantiated and called as such:
-# obj = FindElements(root)
-# param_1 = obj.find(target)
+def build_tree(values):
+    if not values:
+        return None
+    nodes = [TreeNode(val) if val is not None else None for val in values]
+    for i, node in enumerate(nodes):
+        if node:
+            left_index = 2 * i + 1
+            right_index = 2 * i + 2
+            if left_index < len(nodes):
+                node.left = nodes[left_index]
+            if right_index < len(nodes):
+                node.right = nodes[right_index]
+    return nodes[0]
+
+
+root1 = build_tree([-1, None, -1])
+obj1 = FindElements(root1)
+print(obj1.find(1) == False)
+print(obj1.find(2) == True)
+
+root2 = build_tree([-1, -1, -1, -1, -1])
+obj2 = FindElements(root2)
+print(obj2.find(1) == True)
+print(obj2.find(3) == True)
+print(obj2.find(5) == False)
+
+root3 = build_tree([-1, None, -1, -1, None, -1])
+obj3 = FindElements(root3)
+print(obj3.find(2) == True)
+print(obj3.find(3) == False)
+print(obj3.find(4) == False)
+print(obj3.find(5) == True)
