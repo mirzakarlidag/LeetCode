@@ -43,29 +43,39 @@ class TreeNode(object):
         self.right = right
 
 
+
 class Solution(object):
     def recoverFromPreorder(self, traversal):
-        current_depth = 0
-        val = ""
-        nodes = []
-
-        for char in traversal:
-            if char == "-":
-                if val:
-                    nodes.append((current_depth, int(val)))
-                    val = ""
-                current_depth += 1
+        """
+        :type traversal: str
+        :rtype: Optional[TreeNode]
+        """
+        stack = []
+        i = 0
+        while i < len(traversal):
+            depth = 0
+            while i < len(traversal) and traversal[i] == "-":
+                depth += 1
+                i += 1
+            
+            val = 0
+            while i < len(traversal) and traversal[i].isdigit():
+                val = val * 10 + int(traversal[i])
+                i += 1
+            
+            node = TreeNode(val)
+            
+            if depth == len(stack):
+                if stack:
+                    stack[-1].left = node
             else:
-                if current_depth > 0 and val == "":
-                    nodes.append((current_depth, int(val)))
-                    current_depth = 0
-                val += char
-
-        if val:
-            nodes.append((current_depth, int(val)))
-
-        for node in nodes:
-            print(node)
+                while len(stack) > depth:
+                    stack.pop()
+                stack[-1].right = node
+            
+            stack.append(node)
+        
+        return stack[0]
 
 
 root_1 = TreeNode(
