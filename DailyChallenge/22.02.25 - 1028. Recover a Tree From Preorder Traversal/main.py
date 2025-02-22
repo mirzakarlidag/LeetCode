@@ -45,27 +45,27 @@ class TreeNode(object):
 
 class Solution(object):
     def recoverFromPreorder(self, traversal):
-        """
-        :type traversal: str
-        :rtype: Optional[TreeNode]
-        """
-        values = traversal.split("-")
-        root = TreeNode()
+        current_depth = 0
+        val = ""
+        nodes = []
 
-        def backtrack(values, node):
-            for val in values:
+        for char in traversal:
+            if char == "-":
                 if val:
-                    node.val = val
-                else:
-                    if not node.left:
-                        node.left = TreeNode(val)
-                    else:
-                        node.right = TreeNode(val)
+                    nodes.append((current_depth, int(val)))
+                    val = ""
+                current_depth += 1
+            else:
+                if current_depth > 0 and val == "":
+                    nodes.append((current_depth, int(val)))
+                    current_depth = 0
+                val += char
 
-        backtrack(values, root)
-        print(values)
-        print(root.val, root.left.val, root.right.val)
-        return root
+        if val:
+            nodes.append((current_depth, int(val)))
+
+        for node in nodes:
+            print(node)
 
 
 root_1 = TreeNode(
