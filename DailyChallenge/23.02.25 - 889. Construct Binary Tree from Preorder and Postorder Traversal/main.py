@@ -45,3 +45,27 @@ class Solution(object):
         :type postorder: List[int]
         :rtype: Optional[TreeNode]
         """
+        if preorder:
+            root = TreeNode(preorder[0])
+            left_sub_tree = []
+            right_sub_tree = []
+
+        for val in postorder:
+            left_sub_tree.append(val)
+            if not preorder:
+                return None
+            if val == preorder[1]:
+                break
+
+
+root = TreeNode(
+    1, TreeNode(2, TreeNode(4), TreeNode(5)), TreeNode(3, TreeNode(6), TreeNode(7))
+)
+
+sol = Solution()
+
+print(
+    sol.constructFromPrePost([1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1])
+    == [1, 2, 3, 4, 5, 6, 7]
+)
+print(sol.constructFromPrePost([1], [1]) == [1])
