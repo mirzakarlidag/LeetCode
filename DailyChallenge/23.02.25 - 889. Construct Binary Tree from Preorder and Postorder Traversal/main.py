@@ -45,27 +45,52 @@ class Solution(object):
         :type postorder: List[int]
         :rtype: Optional[TreeNode]
         """
-        if preorder:
-            root = TreeNode(preorder[0])
-            left_sub_tree = []
-            right_sub_tree = []
+        if not preorder:
+            return None
 
-        for val in postorder:
-            left_sub_tree.append(val)
-            if not preorder:
-                return None
-            if val == preorder[1]:
-                break
+        root = TreeNode(preorder[0])
+
+        if len(preorder) == 1:
+            return root
+
+        left_root_val = preorder[1]
+        left_size = postorder.index(left_root_val) + 1
+
+        left_preorder = preorder[1 : left_size + 1]
+        right_preorder = preorder[left_size + 1 :]
+
+        left_postorder = postorder[:left_size]
+        right_postorder = postorder[left_size:-1]
+
+        root.left = self.constructFromPrePost(left_preorder, left_postorder)
+        root.right = self.constructFromPrePost(right_preorder, right_postorder)
+
+        return root
 
 
-root = TreeNode(
+root_1 = TreeNode(
     1, TreeNode(2, TreeNode(4), TreeNode(5)), TreeNode(3, TreeNode(6), TreeNode(7))
 )
+root_2 = TreeNode(1)
 
 sol = Solution()
 
+
+def are_trees_equal(node1, node2):
+    if not node1 and not node2:
+        return True
+    if not node1 or not node2:
+        return False
+    return (
+        node1.val == node2.val
+        and are_trees_equal(node1.left, node2.left)
+        and are_trees_equal(node1.right, node2.right)
+    )
+
+
 print(
-    sol.constructFromPrePost([1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1])
-    == [1, 2, 3, 4, 5, 6, 7]
+    are_trees_equal(
+        sol.constructFromPrePost([1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1]), root_1
+    )
 )
-print(sol.constructFromPrePost([1], [1]) == [1])
+print(are_trees_equal(sol.constructFromPrePost([1], [1]), root_2))
