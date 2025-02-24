@@ -59,6 +59,8 @@ amount.length == n
 amount[i] is an even integer in the range [-104, 104].
 """
 
+from collections import defaultdict, deque
+
 
 class Solution(object):
     def mostProfitablePath(self, edges, bob, amount):
@@ -68,3 +70,66 @@ class Solution(object):
         :type amount: List[int]
         :rtype: int
         """
+
+        tree = defaultdict(list)
+        for a, b in edges:
+            tree[a].append(b)
+            tree[b].append(a)
+
+        def find_bob_path(bob_start):
+            parent = {0: None}
+            queue = deque([0])
+
+            while queue:
+                node = queue.popleft()
+                for neighbor in tree[node]:
+                    if neighbor not in parent:
+                        parent[neighbor] = node
+                        queue.append(neighbor)
+
+            path = {}
+            distance = 0
+            bob_node = bob_start
+            while bob_node is not None:
+                path[bob_node] = distance
+                bob_node = parent[bob_node]
+                distance += 1
+
+            return path
+
+        bob_path = find_bob_path(bob)
+
+        self.max_profit = float("-inf")
+
+        def dfs(node, parent, alice_time, total_profit):
+            """
+            node: current node Alice is visiting
+            parent: the parent node to prevent revisiting
+            alice_time: time Alice reaches this node
+            total_profit: current profit so far
+            """
+            if node in bob_path:
+                bob_time = bob_path[node]
+                if alice_time < bob_time:
+                    profit = amount[node]
+                elif alice_time == bob_time:
+                    profit = amount[node] // 2
+                else:
+                    profit = 0
+            else:
+                profit = amount[node]
+
+            total_profit += profit
+
+            is_leaf = True
+            for neighbor in tree[node]:
+                if neighbor != parent:
+                    is_leaf = False
+                    dfs(neighbor, node, alice_time + 1, total_profit)
+
+            if is_leaf:
+                self.max_profit = max(self.max_profit, total_profit)
+
+        dfs(0, None, 0, 0)
+
+        return self.max_profit
