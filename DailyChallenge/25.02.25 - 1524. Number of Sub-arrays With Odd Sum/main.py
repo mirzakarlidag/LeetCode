@@ -53,7 +53,18 @@ class Solution(object):
         if len(odds) == 0:
             return 0
 
-        return (pow(2, len(odds) - 1) - 1) * (pow(2, len(evens)) - 1)
+        def get_sum_of_arr(arr):
+            sum = 0
+            for num in arr:
+                sum += num
+            return sum
+
+        for i in range(len(arr)):
+            for j in range(i, len(arr)):
+                if get_sum_of_arr(arr[i : j + 1]) % 2:
+                    num_of_odd_sub_arrs += 1
+
+        return num_of_odd_sub_arrs
 
 
 sol = Solution()
