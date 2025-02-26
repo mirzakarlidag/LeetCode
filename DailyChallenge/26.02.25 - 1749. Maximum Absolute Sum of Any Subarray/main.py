@@ -30,27 +30,26 @@ Constraints:
 """
 
 
-class Solution(object):
+class Solution:
     def maxAbsoluteSum(self, nums):
         """
-        :type nums: List[int]
-        :rtype: int
+        Time Complexity: O(n)
+        Space Complexity: O(1)
         """
-        max_sum = 0
+        # Track both max and min sums
+        max_sum = min_sum = current_max = current_min = 0
 
-        def sum_of_arr(arr):
-            sum = 0
-            for num in arr:
-                sum += num
-            return sum
+        for num in nums:
+            # Update max subarray sum
+            current_max = max(current_max + num, num)
+            max_sum = max(max_sum, current_max)
 
-        for cursor in range(len(nums)):
-            for end in range(cursor, len(nums) + 1):
-                if cursor == end:
-                    continue
-                max_sum = max(max_sum, abs(sum_of_arr(nums[cursor:end])))
+            # Update min subarray sum
+            current_min = min(current_min + num, num)
+            min_sum = min(min_sum, current_min)
 
-        return max_sum
+        # The maximum absolute sum is either the max sum or the absolute value of min sum
+        return max(max_sum, abs(min_sum))
 
 
 sol = Solution()
