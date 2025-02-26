@@ -36,19 +36,15 @@ class Solution:
         Time Complexity: O(n)
         Space Complexity: O(1)
         """
-        # Track both max and min sums
         max_sum = min_sum = current_max = current_min = 0
 
         for num in nums:
-            # Update max subarray sum
             current_max = max(current_max + num, num)
             max_sum = max(max_sum, current_max)
 
-            # Update min subarray sum
             current_min = min(current_min + num, num)
             min_sum = min(min_sum, current_min)
 
-        # The maximum absolute sum is either the max sum or the absolute value of min sum
         return max(max_sum, abs(min_sum))
 
 
