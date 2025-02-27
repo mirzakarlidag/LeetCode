@@ -37,24 +37,19 @@ class Solution(object):
         :rtype: int
         """
         max_length = 0
-
+        all_subsequences = []
         for i in range(len(arr) - 2):
-            fibo = []
             for j in range(i + 1, len(arr) - 1):
-                if (arr[i] + arr[j]) in arr:
-                    fibo.append(arr[i])
-                    fibo.append(arr[j])
-                    fibo.append(arr[i] + arr[j])
-                    break
+                if arr[i] + arr[j] > arr[-1]:
+                    continue
+                a, b = arr[i], arr[j]
+                current_length = 2
+                while a + b in arr:
+                    a, b = b, a + b
+                    current_length += 1
+                    max_length = max(max_length, current_length)
 
-            if len(fibo) == 3:
-                while fibo[-1] <= arr[-1]:
-                    if (fibo[-2] + fibo[-1]) in arr:
-                        fibo.append(fibo[-2] + fibo[-1])
-                        continue
-                    break
-            max_length = max(max_length, len(fibo))
-        return max_length
+        return max_length if max_length >= 3 else 0
 
 
 sol = Solution()
