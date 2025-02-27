@@ -38,17 +38,22 @@ class Solution(object):
         """
         max_length = 0
 
-        def is_fibo(arr):
-            for i in range(len(arr) - 2):
-                if arr[i + 2] != arr[i] + arr[i + 1]:
-                    return False
-            return True
+        for i in range(len(arr) - 2):
+            fibo = []
+            for j in range(i + 1, len(arr) - 1):
+                if (arr[i] + arr[j]) in arr:
+                    fibo.append(arr[i])
+                    fibo.append(arr[j])
+                    fibo.append(arr[i] + arr[j])
+                    break
 
-        for cursor in range(len(arr) - 2):
-            for end in range(cursor + 2, len(arr)):
-                if is_fibo(arr[cursor : end + 1]):
-                    print(arr[cursor : end + 1])
-                    max_length = max(max_length, len(arr[cursor : end + 1]))
+            if len(fibo) == 3:
+                while fibo[-1] <= arr[-1]:
+                    if (fibo[-2] + fibo[-1]) in arr:
+                        fibo.append(fibo[-2] + fibo[-1])
+                        continue
+                    break
+            max_length = max(max_length, len(fibo))
         return max_length
 
 
