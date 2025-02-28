@@ -35,3 +35,30 @@ class Solution(object):
         :type str2: str
         :rtype: str
         """
+        if str1 in str2:
+            return str2
+        if str2 in str1:
+            return str1
+
+        if len(str1) < len(str2):
+            temp = str1
+            str1 = str2
+            str2 = temp
+
+        shortest_str = str1 + str2
+
+        for i in range(len(str2)):
+            if str2[:i] == str1[-i:]:
+                if len(shortest_str) > len(str1 + str2[i:]):
+                    shortest_str = str1 + str2[i:]
+            elif str2[-i:] == str1[:i]:
+                if len(shortest_str) > len(str2 + str1[i:]):
+                    shortest_str = str2 + str1[i:]
+
+        return shortest_str
+
+
+sol = Solution()
+
+print(sol.shortestCommonSupersequence("abac", "cab") == "cabac")
+print(sol.shortestCommonSupersequence("aaaaaaaa", "aaaaaaaa") == "aaaaaaaa")
