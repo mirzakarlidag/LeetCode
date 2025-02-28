@@ -62,3 +62,4 @@ sol = Solution()
 
 print(sol.shortestCommonSupersequence("abac", "cab") == "cabac")
 print(sol.shortestCommonSupersequence("aaaaaaaa", "aaaaaaaa") == "aaaaaaaa")
+print(sol.shortestCommonSupersequence("bbbaaaba", "bbababbb") == "bbbaaababbb")
